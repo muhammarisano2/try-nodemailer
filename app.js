@@ -5,8 +5,7 @@ const express = require('express');
 const app = express()
 const bodyParser = require('body-parser');
 const logger = require('morgan');
-// const sgMail = require('@sendgrid/mail');
-// sgMail.setApiKey(process.env.SENDGRID_KEY);
+// setting use nodemaile
 const nodemailer = require('nodemailer');
 const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -30,15 +29,8 @@ app.listen(port, () => {
 
 app.post('/email', async(req, res) => {
     const { email, subject } = req.body
-    // const number = '82321321'
-    // const msg = {
-    //     to: email,
-    //     from: 'rinoboy84@gmail.com ',
-    //     subject: subject,
-    //     // text: 'reset password',
-    //     html: `<strong>https://cobasendgrit.com/resetpassword?code=${number}</strong>`,
-    // };
-    let mailOptions = {
+
+    const mailOptions = {
         from: 'rinoboy84@gmail.com',
         to: email,
         subject: subject,
@@ -50,7 +42,7 @@ app.post('/email', async(req, res) => {
             console.log(err)
             res.send('email failed')
         } else{
-
+            
         }        
     });
 
