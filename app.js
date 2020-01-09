@@ -5,7 +5,11 @@ const express = require('express');
 const app = express()
 const bodyParser = require('body-parser');
 const logger = require('morgan');
+
 // setting use nodemaile
+// dokumentasinya https://nodemailer.com/about/
+// kemudian setting https://myaccount.google.com/u/0/lesssecureapps untuk Allow less secure apps menjadi ON (sehingga emai anda tidak aman)
+// bagusnya buat email baru untuk mencoba :)
 const nodemailer = require('nodemailer');
 const transporter = nodemailer.createTransport({
     service: 'gmail',
