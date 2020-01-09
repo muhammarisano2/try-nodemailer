@@ -5,8 +5,19 @@ const express = require('express');
 const app = express()
 const bodyParser = require('body-parser');
 const logger = require('morgan');
-const sgMail = require('@sendgrid/mail');
-sgMail.setApiKey(process.env.SENDGRID_KEY);
+
+// setting use nodemaile
+// dokumentasinya https://nodemailer.com/about/
+// kemudian setting https://myaccount.google.com/u/0/lesssecureapps untuk Allow less secure apps menjadi ON (sehingga emai anda tidak aman)
+// bagusnya buat email baru untuk mencoba :)
+const nodemailer = require('nodemailer');
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.EMAIL,
+        pass: process.env.PASSWORD
+    }
+});
 
 // use module
 app.use(logger('dev'))
@@ -22,24 +33,28 @@ app.listen(port, () => {
 
 app.post('/email', async(req, res) => {
     const { email, subject } = req.body
-    const number = '82321321'
-    const msg = {
+
+    const mailOptions = {
+        from: 'rinoboy84@gmail.com',
         to: email,
-        from: 'rinoboy84@gmail.com ',
         subject: subject,
-        // text: 'reset password',
-        html: `<strong>https://cobasendgrit.com/resetpassword?code=${number}</strong>`,
+        text: 'That was easy!1'
     };
 
-    await sgMail.send(msg)
-    .then(()=>{
-        res.status(200).json({
-        status: 200,
-        error: false,
-        message: 'Successfully send email',
-        data: req.body
-    })
-    })
+    transporter.sendMail(mailOptions, (err, info) => {
+        if (err){
+            console.log(err)
+            res.send('email failed')
+        } else{
+            res.status(200).json({
+                status: 200,
+                error: false,
+                message: 'Successfully send email nodemailer',
+                data: req.body
+            })
+        }        
+    });
+
 })
 
 app.get('*', function(req, res){
