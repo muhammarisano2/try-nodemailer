@@ -46,7 +46,12 @@ app.post('/email', async(req, res) => {
             console.log(err)
             res.send('email failed')
         } else{
-            
+            res.status(200).json({
+                status: 200,
+                error: false,
+                message: 'Successfully send email nodemailer',
+                data: req.body
+            })
         }        
     });
 
